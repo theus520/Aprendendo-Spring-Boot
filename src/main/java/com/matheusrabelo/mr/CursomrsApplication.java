@@ -13,6 +13,7 @@ import com.matheusrabelo.mr.Repositories.CidadeRepository;
 import com.matheusrabelo.mr.Repositories.ClienteRepository;
 import com.matheusrabelo.mr.Repositories.EnderecoRepository;
 import com.matheusrabelo.mr.Repositories.EstadoRepository;
+import com.matheusrabelo.mr.Repositories.ItemPedidoRepository;
 import com.matheusrabelo.mr.Repositories.PagamentoRepository;
 import com.matheusrabelo.mr.Repositories.PedidoRepository;
 import com.matheusrabelo.mr.Repositories.ProdutoRepository;
@@ -21,6 +22,7 @@ import com.matheusrabelo.mr.domain.Cidade;
 import com.matheusrabelo.mr.domain.Cliente;
 import com.matheusrabelo.mr.domain.Endereco;
 import com.matheusrabelo.mr.domain.Estado;
+import com.matheusrabelo.mr.domain.ItemPedido;
 import com.matheusrabelo.mr.domain.Pagamento;
 import com.matheusrabelo.mr.domain.PagamentoComBoleto;
 import com.matheusrabelo.mr.domain.PagamentoComCartao;
@@ -56,6 +58,10 @@ public class CursomrsApplication implements CommandLineRunner {
 	@Autowired
 
 	private PagamentoRepository pagamentoRepository;
+
+	@Autowired
+
+	private ItemPedidoRepository itemPedidoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursomrsApplication.class, args);
@@ -123,6 +129,19 @@ public class CursomrsApplication implements CommandLineRunner {
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
 
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1,ip2,ip3));
 	}
 
 }
